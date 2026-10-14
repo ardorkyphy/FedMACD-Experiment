@@ -1,0 +1,22 @@
+network synthetic_chain {
+}
+variable BirthAsphyxia {
+  type discrete [ 2 ] { True, False };
+}
+variable HypDistrib {
+  type discrete [ 2 ] { True, False };
+}
+variable HypoxiaInO2 {
+  type discrete [ 2 ] { True, False };
+}
+probability ( BirthAsphyxia ) {
+  table 0.3, 0.7;
+}
+probability ( HypDistrib | BirthAsphyxia ) {
+  (True) 0.8, 0.2;
+  (False) 0.2, 0.8;
+}
+probability ( HypoxiaInO2 | HypDistrib ) {
+  (True) 0.85, 0.15;
+  (False) 0.1, 0.9;
+}

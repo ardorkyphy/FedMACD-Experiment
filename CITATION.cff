@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use FedMACD, please cite the associated manuscript."
+title: "FedMACD: Federated Multi-Agent Causal Discovery by Reconciling Statistical and Semantic Evidence"
+type: software
+version: 1.0.0
+authors:
+  - family-names: Lin
+    given-names: Kunyu
+  - family-names: Hu
+    given-names: Ziang
+  - family-names: Li
+    given-names: Xiemou
+  - family-names: Li
+    given-names: Yucheng
+  - family-names: Li
+    given-names: Xiaodong
+  - family-names: Wang
+    given-names: Shaowei
+    orcid: "https://orcid.org/0000-0001-5595-5099"
+contact:
+  - family-names: Lin
+    given-names: Kunyu
+    email: skexey@e.gzhu.edu.cn
+keywords:
+  - causal discovery
+  - federated learning
+  - multi-agent systems
+  - large language models

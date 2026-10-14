@@ -1,0 +1,1 @@
+"""FedMACD core regression tests."""
