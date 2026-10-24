@@ -63,7 +63,7 @@ Prepare the inputs and set `FEDMACD_DATA_DIR` to their parent directory as descr
 
 ## Experiment results
 
-The companion [Zenodo record](https://doi.org/10.5281/zenodo.23611058) contains the paper's experiment outputs: fold-level records, predicted graphs, metrics, and selection ledgers. It is independent of the third-party input sources documented in `docs/DATASETS.md`.
+The companion [Zenodo record](https://doi.org/10.5281/zenodo.23615384) contains the paper's experiment outputs: fold-level records, predicted graphs, metrics, and selection ledgers. It is independent of the third-party input sources documented in `docs/DATASETS.md`.
 
 ## Reproducing a main fold
 
@@ -117,7 +117,7 @@ GitHub contains the core implementation, processing and experiment code,
 metrics, general visualization, paper figure/table scripts, tests, and docs.
 Zenodo contains curated experiment results, a result manifest, and checksums.
 
-This source repository is hosted at [GitHub](https://github.com/ardorkyphy/FedMACD-Experiment); the experiment records are available from [Zenodo](https://doi.org/10.5281/zenodo.23611058).
+This source repository is hosted at [GitHub](https://github.com/ardorkyphy/FedMACD-Experiment); the experiment records are available from [Zenodo](https://doi.org/10.5281/zenodo.23615384).
 
 ## License
 
