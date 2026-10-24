@@ -135,7 +135,7 @@ def total_mean(runs, key):
 
 
 def sanity(data, q):
-    # anchors re-checked against plan of record section 11.1
+    # Reference values from the manuscript
     assert abs(total_mean(q, 'f1') - 0.7433) < 1e-4
     assert abs(total_mean(q, 'shd') - 8.67) < 1e-2
     assert abs(data['FedPC'][('DWD_climate', 'homogeneous')][0][0] - 0.4396) < 1e-3

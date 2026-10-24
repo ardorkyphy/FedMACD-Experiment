@@ -126,7 +126,7 @@ def prepare_bn(output_root: Path) -> None:
         with urllib.request.urlopen(url, timeout=60) as response:
             content = gzip.decompress(response.read())
         if hashlib.sha256(content).hexdigest() != BN_HASHES[name]:
-            raise ValueError(f"Upstream BIF changed; review before using it: {url}")
+            raise ValueError(f"The upstream BIF has changed; see docs/DATA_VALIDATION.md: {url}")
         if name == "asia":
             blocks = re.split(r"(?m)(?=^(?:network|variable|probability)\s)", content.decode("utf-8"))
             network = [block for block in blocks if block.startswith("network")]
@@ -148,7 +148,7 @@ if __name__ == "__main__":
     parser.add_argument("--notears-root", type=Path)
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--download-bnlearn", action="store_true",
-                        help="Download checksum-verified bnlearn BIFs and restore historical Asia order")
+                        help="Download the bnlearn BIF files used in the experiments")
     args = parser.parse_args()
     if args.download_bnlearn:
         prepare_bn(args.output_root)

@@ -25,13 +25,12 @@ STYLE = {
     'DWD_climate': dict(color='#1f4e79', marker='s', label='DWD_climate'),
     'survey': dict(color='#c0504d', marker='o', label='survey'),
 }
-# anchors, plan of record section 11.4
+# reference values from the manuscript
 ANCHOR = {
     'DWD_climate': [0.573, 0.653, 0.667, 0.621],
     'survey': [0.711, 0.665, 0.711, 0.656],
 }
-# SHD of the very same folds (recomputed from the jsonl and logged to
-# logs/paper_figures/strength_shd_*.log before being pinned here)
+# SHD values are checked against the manuscript summary.
 ANCHOR_SHD = {
     'DWD_climate': [6.3333, 5.3333, 4.6667, 5.6667],
     'survey': [2.6667, 3.6667, 2.6667, 3.0000],

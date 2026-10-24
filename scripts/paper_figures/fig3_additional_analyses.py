@@ -6,7 +6,7 @@ Rows are the two analyses, columns the two metrics:
     (a) heterogeneity strength, directed F1      (b) heterogeneity strength, SHD
     (c) scalability vs. clients, directed F1     (d) scalability vs. clients, SHD
 
-Two panels were removed on 2026-09-26 (user instruction):
+The figure includes two analyses:
 
 * the debate-budget panel is not drawn at all -- the same four dataset--scenario
   cells already appear as Table 2, so a figure would only re-draw numbers the
@@ -17,7 +17,7 @@ Two panels were removed on 2026-09-26 (user instruction):
 Panels (a)(b) are the heterogeneous-split strength sweep (DWD_climate, survey)
 and (c)(d) the client sweep (alarm, child, homogeneous split); both carry three
 seeds per point.  SHD is plotted with "lower is better", which the axis label
-says.  Drawing code, data source and assertion anchors still live in the
+says.  Drawing code and data sources are defined in the
 single-panel modules (``fig2_heterogeneity_strength`` and ``fig3_scalability``);
 this file only arranges them and never recomputes anything.  Typography, grid
 and canvas width come from ``fig1_performance`` (the script behind Fig. 3), as in

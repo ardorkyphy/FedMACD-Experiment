@@ -2,7 +2,7 @@
 
 FedMACD is a federated multi-agent causal discovery framework that reconciles statistical evidence with variable semantics. Raw observations remain at the clients; the server receives evidence packages, debates candidate edges, judges their existence and orientation, and removes directed cycles deterministically. This is not a differential privacy guarantee: uploaded statistics and semantic interactions may still reveal information.
 
-This repository is the paper-aligned public source release. The authoritative experiment configuration is **v4.36**; older notes and backup scripts are outside this repository.
+This repository provides the code and data-preparation instructions for the experiments reported in the paper. The experiment configuration is v4.36.
 
 ## Paper configuration
 
@@ -17,23 +17,14 @@ This repository is the paper-aligned public source release. The authoritative ex
 
 ## Heterogeneous construction
 
-The heterogeneous scenario preserves the causal graph while inducing client-specific distribution shift. It is a shared experimental objective, not one identical sampling algorithm:
+The heterogeneous scenario preserves the causal graph while inducing client-specific distribution shift. Its implementation depends on the benchmark type:
 
 - Discrete BIF datasets: each client independently draws observations from a client-specific softly intervened Bayesian network.
 - Continuous CSV datasets: each client independently receives a preference-region-weighted draw without replacement within that client's draw. Source rows may occur at more than one client.
 
-The default heterogeneity strength is 0.7. The paper and code describe this as a **type-specific heterogeneous construction**.
+The default heterogeneity strength is 0.7.
 
-The two implementations differ because the BIF benchmarks provide an explicit
-Bayesian network and conditional probability tables: client-specific soft
-interventions can therefore generate new observations while preserving the
-DAG. The continuous benchmarks provide fixed observational tables, so using
-the same mechanism would require fitting an additional generative model and
-would introduce assumptions not present in the study. Their weighted
-resampling instead creates client-specific preference-region shifts directly
-from the observed records. Consequently, a strength value such as 0.7 controls
-the shift within each construction; it is not a claim that discrete and
-continuous shifts are numerically identical.
+For BIF benchmarks, clients sample from Bayesian networks with client-specific soft interventions. For continuous benchmarks, clients receive client-specific weighted samples from the observed records; the same source row may occur at more than one client. The strength parameter controls the shift within each method.
 
 ## Repository layout
 
@@ -48,7 +39,7 @@ continuous shifts are numerically identical.
 | `tests/` | Algorithm and data-layer regression tests |
 | `scripts/paper_figures/` | Regenerate paper figures and tables from the extracted Zenodo results |
 
-Private working files, old result trees, logs, prompt-response traces, local environments, third-party source snapshots, submission correspondence, and secrets are deliberately excluded from the public release.
+The repository includes the experiment code, data-preparation scripts, tests, and documentation.
 
 ## Environment
 
@@ -65,28 +56,10 @@ Copy `.env.example` to `.env` and add only the provider keys you intend to use. 
 The public release distinguishes regenerated study data from third-party source data. The data dictionary and acquisition instructions are in [`docs/DATASETS.md`](docs/DATASETS.md).
 
 - Bayesian-network structures are used to generate 10,000-observation study instances by forward sampling.
-- ER20 can be regenerated with the documented NOTEARS-ADMM simulation utility and settings; the regenerated input was checked against the historical matrix to floating-point precision.
+- ER20 is generated with the NOTEARS-ADMM simulation utility.
 - Auto MPG, DWD climate, Sachs, and 10nodes retain their cited provenance; redistribution is governed by their original sources.
-- Only 10nodes and ER20 use anonymous numeric variable names and therefore have no usable semantic descriptions. Survey and Sachs have readable variable semantics, although their orientations remain challenging.
 
-After obtaining study inputs, point the code to the parent directory of the dataset paths described in `docs/DATASETS.md`:
-
-```bash
-# PowerShell
-$env:FEDMACD_DATA_DIR = "path\to\local-datasets"
-
-# bash/zsh
-export FEDMACD_DATA_DIR=/path/to/local-datasets
-```
-
-To prepare the three MATMCD tables, 10nodes and generated ER20, obtain the
-pinned LLM-and-SCD (linked by MATMCD), FedPC and NOTEARS-ADMM source checkouts, then run
-`scripts/prepare_public_datasets.py` as described in `docs/DATASETS.md`.
-Download current bnlearn BIF files separately with
-`python scripts/prepare_public_datasets.py --output-root /path/to/local-datasets --download-bnlearn`.
-The script checks upstream BIF hashes and restores the historical Asia block order,
-which affects seeded sampling. It also verifies checksums of the four external
-continuous inputs. See the data guide for ER20 numerical verification and environment requirements.
+Prepare the inputs and set `FEDMACD_DATA_DIR` to their parent directory as described in [`docs/DATASETS.md`](docs/DATASETS.md).
 
 ## Experiment results
 
@@ -94,13 +67,13 @@ The companion [Zenodo record](https://doi.org/10.5281/zenodo.23611058) contains 
 
 ## Reproducing a main fold
 
-After preparing the inputs above, run from the repository root:
+After preparing the inputs, run from the repository root:
 
 ```bash
 python scripts/run_v436_main.py asia homogeneous 0
 ```
 
-This command runs one fold and may call a paid API. New runs can differ from the reported results because hosted LLM outputs and optional algorithm availability may vary. Use the archived fold records to regenerate the reported tables and figures; a new API run is a methodological replication, not a promise of identical metrics. Select a paper model before launching a new process:
+This command runs one fold and may call a paid API. Hosted model outputs and optional algorithm availability can change, so a new run may not reproduce the exact archived metrics. To regenerate the reported figures and tables without API calls, use the archived fold records as described below. Select a model before launching the process:
 
 ```powershell
 $env:FEDMACD_PROVIDER = "deepseek" # deepseek-v4-flash, default
@@ -144,7 +117,7 @@ GitHub contains the core implementation, processing and experiment code,
 metrics, general visualization, paper figure/table scripts, tests, and docs.
 Zenodo contains curated experiment results, a result manifest, and checksums.
 
-This source repository is hosted at https://github.com/ardorkyphy/FedMACD-Experiment. Its Zenodo companion contains experiment results.
+This source repository is hosted at [GitHub](https://github.com/ardorkyphy/FedMACD-Experiment); the experiment records are available from [Zenodo](https://doi.org/10.5281/zenodo.23611058).
 
 ## License
 

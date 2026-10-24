@@ -9,30 +9,7 @@ three backbones:
     (b) average wall-clock time per fold [s]     (linear y)
     (c) mean directed F1                         (linear y)
 
-Style source of truth: the typography, the edge width, the grid style and the
-canvas width are imported from ``fig1_performance`` (the script behind Fig. 3), so
-the two figures keep one visual language.  The three fills are NOT Fig. 3's: since
-2026-09-26 the default is the Okabe-Ito color-universal-design set, i.e. the
-colour-blind-safe qualitative palette recommended for scientific figures
-(B. Wong, "Points of view: Color blindness", Nature Methods 8:441, 2011; listed as
-``Okabe-Ito`` in R's grDevices palette table).  Hue roles follow Fig. 3 --
-blue = qwen3.8-flash, green = deepseek-v4-flash, orange = glm-5.3-flash -- and
-every fill gets a darker edge of its own hue.
-
-Sources are the same per-fold records that feed Figs. 1--4; nothing is re-run
-and no plotted value is hard-coded.  The only literals are the assertion anchors
-of the plan of record (section 11.4), checked before anything is drawn.
-
-Caveat kept from the plan of record: the three backbones' cost records come from
-different run batches (deepseek 2026-08-27, qwen 08-30/31, glm 09-03/05, with the
-six Auto_MPG folds re-run on 09-14), so cross-backbone cost gaps mix in machine
-and API-state effects.  Token counts are the more comparable reading.
-
-NOTE ON THE PLAN OF RECORD: `paper_figures_tables.tex` section 0 still says bars
-appear only in Fig. 3.  The user overrode that rule verbally on 2026-09-26; the
-rule text has NOT been edited yet and must be amended before this figure enters
-the paper.
-"""
+The figure shares typography and layout settings with the other main-results figures. Bar colors distinguish the three backbones. Values are computed from the archived fold records and checked against the manuscript summary. Cost measurements were collected in separate runs; token counts are less sensitive to machine load than elapsed time."""
 from __future__ import annotations
 
 import os
@@ -50,15 +27,10 @@ import fig1_performance as F3          # Fig. 3: palette, typography, canvas wid
 
 DATASET_ORDER = C.DISCRETE + C.CONTINUOUS
 
-# Colours are chosen here rather than imported from Fig. 3 (user, 2026-09-26:
-# "change it, it does not have to be exactly the same"); the typography, grid,
-# edge width and canvas width below are still taken from fig1_performance so the
-# two figures keep one visual language.  Each fill gets an edge that is the same
-# hue darkened by ``EDGE_FACTOR`` -- the Fig. 3 look (flat fill + dark edge)
-# without copying Fig. 3's hues.
-# Palette provenance: 'triad' is the user-specified red / teal / sand triad
-# (2026-09-26), lifted by +0.10 HLS lightness, and is the default; 'triad_base'
-# holds the unbrightened RGBs; 'pastel' is the earlier light blue / light green /
+# The red/teal/sand palette distinguishes the three backbones. Each fill gets a
+# darker edge of the same hue for contrast.
+# 'triad' is the default palette; 'triad_base' keeps its original RGB values.
+# 'pastel' is an earlier light blue / light green /
 # light purple triad; 'okabe' is the Okabe-Ito set listed as
 # .palette_colors_hex[["Okabe-Ito"]] in R grDevices (R-4.5.1,
 # src/library/grDevices/R/colorstuff.R).
@@ -71,16 +43,12 @@ PALETTES = {
     # of R >= 4.0 (grDevices::palette.colors("Okabe-Ito")).
     'okabe': {'qwen3.8-flash': '#0072B2', 'deepseek-v4-flash': '#009E73',
               'glm-5.3-flash': '#D55E00'},
-    # User-specified triad, 2026-09-26: red rgb(209,83,84), teal rgb(61,166,174)
-    # and sand rgb(232,184,108), each lifted by +0.10 in HLS lightness with hue and
-    # saturation kept (the user reverted to this sand version after trying a green
-    # third colour and then a fluorescent orange one; both read too loud).
-    # 'triad_base' keeps the unbrightened RGBs; edges stay fill * 0.62.
+    # Red/teal/sand palette, with slightly increased lightness.
     'triad': {'qwen3.8-flash': '#DC7B7C', 'deepseek-v4-flash': '#59BDC5',
               'glm-5.3-flash': '#EFCD98'},
     'triad_base': {'qwen3.8-flash': '#D15354', 'deepseek-v4-flash': '#3DA6AE',
                    'glm-5.3-flash': '#E8B86C'},
-    # Earlier user-specified pastel variant, kept for reference: light blue
+    # Alternative pastel variant: light blue
     # rgb(148,179,223), light green rgb(179,212,155), light purple rgb(205,163,203).
     'pastel': {'qwen3.8-flash': '#94B3DF', 'deepseek-v4-flash': '#B3D49B',
                'glm-5.3-flash': '#CDA3CB'},
@@ -139,7 +107,7 @@ BAR_W = 0.32
 # run into each other.  Rotated, they use the headroom each ylim now keeps.
 FS_LABEL = 7.5
 
-# anchors -- plan of record, section 11.4: per-fold mean over the 60 main folds
+# Reference values from the manuscript: per-fold mean over the 60 main folds
 ANCHOR_MEAN = {
     'glm-5.3-flash': dict(tokens_k=288, seconds=1328, f1=0.766),
     'qwen3.8-flash': dict(tokens_k=478, seconds=3705, f1=None),
@@ -220,8 +188,8 @@ def draw(fig, axes, fs=None, value_labels=False, error_bars=False):
     # ylim leaves headroom above the tallest bar + its sd for the rotated value
     # label; the tick format is used on the axis, the label format on the bars.
     # Bar labels round (%.0f) rather than truncate (%d): a mean of 171.99 k reads as
-    # 172, matching the rounded anchors of the plan of record (288/478/581 k).
-    # No whiskers (user, 2026-09-26: "error bars: do not add them"); the sd-over-
+    # 172, matching the rounded manuscript summary (288/478/581 k).
+    # Draw bars without whiskers. The sd-over-
     # seeds numbers stay available through ``error_bars=True`` and are printed by
     # this module, and Table 1 carries them for the ablation grid.  Each ylim has
     # to leave one rotated-label length (about 24 pt, i.e. ~20 per cent of a panel)

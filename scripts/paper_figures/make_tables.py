@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 """Generate the seven LaTeX table fragments used by Tab. 1--7.
 
-Every number is computed from the per-fold records in ``src_v4/experiment/
-results`` (see ``_common.py``).  The literals in this file are *assertion
-anchors* copied from the plan of record (section 11) and from the numbers the
-plan already carries in its own table shells; the script refuses to write a
-fragment whose value does not reproduce them.  Tab. 1 takes its anchors
-from the shell introduced in section 2.2.
+Every number is computed from the archived per-fold records (see ``_common.py``).
+The script checks the computed values against the manuscript results before
+writing table fragments.
 
 Fragments are row bodies only: they are meant to be spliced between the
 ``\\midrule`` and ``\\bottomrule`` of a table shell.  Internal ``\\midrule``
@@ -56,7 +53,7 @@ def write(fname, lines):
 
 
 # --------------------------------------------------------------------- Tab. 1
-# anchors: plan of record section 2.2 (the shell carries the header only; every
+# Reference values: manuscript Table 1 (the shell carries the header only; every
 # number below is recomputed from the per-fold records by tab1_rank).  The
 # four domain columns are means over five datasets (multiples of 0.1, hence the
 # two decimals); the overall column is their mean and keeps three decimals here.
@@ -73,7 +70,7 @@ ANCHOR_RANK = {
 }
 
 # --------------------------------------------------------------------- Tab. 2
-# anchors: plan of record section 3.2 (the numbers the shell already carries)
+# Reference values: manuscript Table 2 (the numbers the shell already carries)
 ANCHOR1 = {
     ('homogeneous', 'D_acc'): (0.794, 0.015, 0.742, 0.031, 0.746, 0.004, 0.774, 0.019),
     ('homogeneous', 'F1'): (0.798, 0.017, 0.737, 0.010, 0.754, 0.014, 0.771, 0.023),
@@ -85,7 +82,7 @@ ANCHOR1 = {
     ('both pooled', 'F1'): (0.800, 0.003, 0.748, 0.024, 0.753, 0.006, 0.777, 0.008),
     ('both pooled', 'SHD'): (12.11, 0.25, 15.78, 1.70, 16.33, 0.44, 14.33, 0.44),
 }
-# anchors: plan of record section 11.7 (per-dataset pooled D_acc)
+# Reference values: supplementary ablation table (per-dataset pooled D_acc)
 ANCHOR117 = {
     ('child', 'homogeneous'): (0.878, 0.807, 0.883, 0.844),
     ('child', 'heterogeneous'): (0.875, 0.901, 0.878, 0.932),
@@ -94,10 +91,10 @@ ANCHOR117 = {
     ('Sachs', 'homogeneous'): (0.440, 0.341, 0.418, 0.509),
     ('Sachs', 'heterogeneous'): (0.551, 0.366, 0.562, 0.495),
 }
-# anchors: plan of record section 5 (debate-round table shell)
+# Reference values: manuscript debate-round table (debate-round table shell)
 # tuples are (F1, SHD, tokens in k) for rounds 0 / 1 / 2 / 3; the token figure is
 # kept as a fold-identity pin even though Tab. 3 no longer prints it (cost is
-# reported by Fig. 5 instead).  3-round column added 2026-09-26.
+# reported by Fig. 5 instead).  The third-round column is included for comparison.
 ANCHOR2 = {
     ('DWD_climate', 'homogeneous'): ((0.618, 7.00, 76), (0.622, 6.33, 130), (0.713, 4.33, 189),
                                      (0.724, 4.33, 270)),
@@ -109,7 +106,7 @@ ANCHOR2 = {
                                   (0.722, 2.67, 135)),
 }
 
-# the plan's anchors carry 3 decimals for D_acc / F1 and 2 for SHD
+# Reference values use 3 decimals for D_acc / F1 and 2 for SHD
 TOL = {'D_acc': 5e-4, 'F1': 5e-4, 'SHD': 5e-3}
 
 ROUND_DATASETS = ['DWD_climate', 'survey']

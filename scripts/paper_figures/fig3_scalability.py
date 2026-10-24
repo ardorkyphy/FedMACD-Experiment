@@ -22,7 +22,7 @@ import _common as C
 NCS = [4, 7, 12, 17]
 DATASETS = [('alarm', 's'), ('child', 'o')]
 STYLE = {'alarm': '#1f4e79', 'child': '#c0504d'}
-# anchors, plan of record section 11.4
+# reference values from the manuscript
 ANCHOR_F1 = {'alarm': [0.914, 0.919, 0.880, 0.922], 'child': [0.872, 0.884, 0.858, 0.855]}
 FS = dict(label=11.0, tick=10.0, legend=10.0, letter=13.0)
 
@@ -44,7 +44,7 @@ def draw_metric(ax, metric, fs=None, lw=1.6, ms=6.0, elw=1.0, capsize=3.0,
     """Draw one metric of the client sweep ('f1' or 'shd') into a single axis."""
     fs = dict(FS, **(fs or {}))
     f1 = {ds: series(ds, 'f1') for ds, _ in DATASETS}
-    for ds, _ in DATASETS:                      # F1 anchors guard every call
+    for ds, _ in DATASETS:
         for i, a in enumerate(ANCHOR_F1[ds]):
             assert abs(f1[ds][i][0] - a) < 5e-4, (ds, NCS[i], f1[ds][i][0], a)
     for ds, marker in DATASETS:
