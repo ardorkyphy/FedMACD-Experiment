@@ -11,7 +11,7 @@ This repository is the paper-aligned public source release. The authoritative ex
 - 3 split seeds: 0, 1, and 2.
 - 4 clients per fold.
 - 3 reasoning backbones: qwen3.8-flash, deepseek-v4-flash, and glm-5.3-flash.
-- 17 registered local causal-discovery algorithms.
+- A registered pool of local causal-discovery algorithms; the available pool depends on installed optional packages.
 - Two protocol stages: edge existence followed by edge orientation.
 - The five Bayesian-network experiments use 10,000 generated observations, including Alarm.
 
@@ -52,24 +52,22 @@ Private working files, old result trees, logs, prompt-response traces, local env
 
 ## Environment
 
-The release was checked with Python 3.12.7 and the pinned package versions in `requirements.txt`. Install:
+The source-release development environment used Python 3.12.7 and the package versions in `requirements.txt`. Install:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env` and add only the provider keys you intend to use. Never commit `.env`. Some members of the 17-algorithm pool require optional libraries; unavailable algorithms are filtered from the candidate pool at runtime.
+Copy `.env.example` to `.env` and add only the provider keys you intend to use. Never commit `.env`. Some registered algorithms require optional libraries; unavailable algorithms are filtered from the candidate pool at runtime.
 
 ## Data
 
-The public release distinguishes generated study data from third-party source data. The complete public data dictionary is [`docs/DATASETS.md`](docs/DATASETS.md).
+The public release distinguishes regenerated study data from third-party source data. The data dictionary and acquisition instructions are in [`docs/DATASETS.md`](docs/DATASETS.md).
 
-- Bayesian-network structures are used to generate 10,000-row study instances by forward sampling.
-- ER20 is synthetic and generated with the NOTEARS-ADMM simulation utilities used in the study.
+- Bayesian-network structures are used to generate 10,000-observation study instances by forward sampling.
+- ER20 can be regenerated with the documented NOTEARS-ADMM simulation utility and settings; the regenerated input was checked against the historical matrix to floating-point precision.
 - Auto MPG, DWD climate, Sachs, and 10nodes retain their cited provenance; redistribution is governed by their original sources.
 - Only 10nodes and ER20 use anonymous numeric variable names and therefore have no usable semantic descriptions. Survey and Sachs have readable variable semantics, although their orientations remain challenging.
-
-The companion Zenodo record contains the paper's experiment outputs: fold-level records, predicted graphs, metrics, and selection ledgers. It does not distribute input datasets. Sources, shapes, column order, expected local paths, and unresolved acquisition details for all ten datasets are in `docs/DATASETS.md`. The Zenodo record will be made public with the paper; its DOI is intentionally omitted until the record is published.
 
 After obtaining study inputs, point the code to the parent directory of the dataset paths described in `docs/DATASETS.md`:
 
@@ -81,19 +79,28 @@ $env:FEDMACD_DATA_DIR = "path\to\local-datasets"
 export FEDMACD_DATA_DIR=/path/to/local-datasets
 ```
 
-For four external continuous tables, public acquisition and exact historical
-reconstruction remain incomplete. See `docs/DATASETS.md` and
-`docs/SOURCE_DATA_LIMITATIONS.md` before attempting those folds.
+To prepare the three MATMCD tables, 10nodes and generated ER20, obtain the
+pinned LLM-and-SCD (linked by MATMCD), FedPC and NOTEARS-ADMM source checkouts, then run
+`scripts/prepare_public_datasets.py` as described in `docs/DATASETS.md`.
+Download current bnlearn BIF files separately with
+`python scripts/prepare_public_datasets.py --output-root /path/to/local-datasets --download-bnlearn`.
+The script checks upstream BIF hashes and restores the historical Asia block order,
+which affects seeded sampling. It also verifies checksums of the four external
+continuous inputs. See the data guide for ER20 numerical verification and environment requirements.
+
+## Experiment results
+
+The companion [Zenodo record](https://doi.org/10.5281/zenodo.23611058) contains the paper's experiment outputs: fold-level records, predicted graphs, metrics, and selection ledgers. It is independent of the third-party input sources documented in `docs/DATASETS.md`.
 
 ## Reproducing a main fold
 
-From the repository root:
+After preparing the inputs above, run from the repository root:
 
 ```bash
 python scripts/run_v436_main.py asia homogeneous 0
 ```
 
-This command runs exactly one fold and may call a paid API. Select a paper model before launching a new process:
+This command runs one fold and may call a paid API. New runs can differ from the reported results because hosted LLM outputs and optional algorithm availability may vary. Use the archived fold records to regenerate the reported tables and figures; a new API run is a methodological replication, not a promise of identical metrics. Select a paper model before launching a new process:
 
 ```powershell
 $env:FEDMACD_PROVIDER = "deepseek" # deepseek-v4-flash, default
@@ -137,7 +144,7 @@ GitHub contains the core implementation, processing and experiment code,
 metrics, general visualization, paper figure/table scripts, tests, and docs.
 Zenodo contains curated experiment results, a result manifest, and checksums.
 
-This source repository is hosted at https://github.com/ardorkyphy/FedMACD-Experiment. The companion Zenodo DOI will be added after the record is published.
+This source repository is hosted at https://github.com/ardorkyphy/FedMACD-Experiment. Its Zenodo companion contains experiment results.
 
 ## License
 

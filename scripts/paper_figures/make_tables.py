@@ -233,7 +233,6 @@ def tab1_rank():
 
 def tab2():
     rows, seen = [], {}
-    rows, seen = [], {}
     for scen, label in (('homogeneous', 'homogeneous'),
                         ('heterogeneous', 'heterogeneous'),
                         (None, 'both pooled')):
@@ -246,15 +245,12 @@ def tab2():
             for k, (value, sd) in enumerate(cells):
                 assert abs(value - anchor[2 * k]) < tol, (label, metric, k, value, anchor[2 * k])
                 assert abs(sd - anchor[2 * k + 1]) < tol, (label, metric, k, sd, anchor[2 * k + 1])
-            ours = cells[0][0]
-            dc = ours - cells[1][0]
-            dd = ours - cells[2][0]
-            if metric == 'SHD':
-                dc, dd = -dc, -dd
+            full, no_local, no_debate, neither = [cell[0] for cell in cells]
+            # Two-factor coefficients defined in the manuscript, also for SHD.
+            dc = (full + no_debate - no_local - neither) / 4.0
+            dd = (full + no_local - no_debate - neither) / 4.0
             seen[(label, metric)] = (cells, dc, dd)
-            # SHD cells print to 2 decimals, so its deltas do too
-            dnd = 2 if metric == 'SHD' else 3
-            dfmt = '$%+.' + str(dnd) + 'f$'
+            dfmt = '$%+.4f$'
             rows.append(' & '.join([
                 label,
                 metric if metric != 'D_acc' else '$D_{acc}$',
