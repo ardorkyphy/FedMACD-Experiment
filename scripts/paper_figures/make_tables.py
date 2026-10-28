@@ -357,11 +357,7 @@ def tab7():
 def main():
     os.makedirs(C.TABLE_DIR, exist_ok=True)
     write('tab1_rank.tex', tab1_rank())
-    body, _ = tab2()
-    write('tab2_ablation_summary.tex', body)
     write('tab3_debate_rounds.tex', tab3())
-    for fname, lines in tab456().items():
-        write(fname, lines)
     write('tab7_main_fold.tex', tab7())
 
 

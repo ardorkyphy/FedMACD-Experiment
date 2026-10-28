@@ -47,7 +47,7 @@ BACKBONE_ORDER = ['qwen3.8-flash', 'deepseek-v4-flash', 'glm-5.3-flash']
 MAIN_BACKBONE = 'glm-5.3-flash'
 
 # ablation / additional analyses exist for glm-5.3-flash only (plan D15)
-ABLATION_DATASETS = ['child', 'alarm', 'Sachs']
+ABLATION_DATASETS = ['asia', 'child', 'alarm', 'survey', 'earthquake', 'Auto_MPG', 'Sachs', 'DWD_climate', '10nodes', 'ER20']
 ABL_SETTINGS = ['Ours', 'no_client_analyze', 'no_debate', 'no_client_analyze_no_debate']
 ABL_LABEL = {
     'Ours': 'Ours',
